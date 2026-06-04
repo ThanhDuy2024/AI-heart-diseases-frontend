@@ -1,8 +1,12 @@
 import { Outlet } from 'react-router-dom';
 import Navbar from '../components/common/Navbar';
 import Footer from '../components/common/Footer';
+import ChatbotWidget from '../components/common/ChatbotWidget';
+import { useAuth } from '../context/AuthContext';
 
 const PublicLayout = () => {
+  const { user } = useAuth();
+
   return (
     <div className="min-h-screen flex flex-col">
       <Navbar />
@@ -10,6 +14,7 @@ const PublicLayout = () => {
         <Outlet />
       </main>
       <Footer />
+      {user && <ChatbotWidget />}
     </div>
   );
 };

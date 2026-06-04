@@ -2,7 +2,7 @@ import { useState, useEffect } from 'react';
 import { Link, useLocation, useNavigate } from 'react-router-dom';
 import { useAuth } from '../../context/AuthContext';
 import {
-  Heart, Menu, X, Home, Activity, History, MessageCircle,
+  Heart, Menu, X, Home, Activity, History,
   User, LogOut, ChevronDown
 } from 'lucide-react';
 
@@ -35,7 +35,6 @@ const Navbar = () => {
     { to: '/', label: 'Trang chủ', icon: Home },
     { to: '/predict', label: 'Dự đoán', icon: Activity },
     { to: '/history', label: 'Lịch sử', icon: History },
-    { to: '/chatbot', label: 'AI Chat', icon: MessageCircle },
   ];
 
   const navLinks = user ? authLinks : publicLinks;

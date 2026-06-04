@@ -8,7 +8,6 @@ import LoginPage from './pages/LoginPage';
 import RegisterPage from './pages/RegisterPage';
 import PredictPage from './pages/PredictPage';
 import HistoryPage from './pages/HistoryPage';
-import ChatbotPage from './pages/ChatbotPage';
 
 function App() {
   return (
@@ -34,7 +33,6 @@ function App() {
           >
             <Route path="/predict" element={<PredictPage />} />
             <Route path="/history" element={<HistoryPage />} />
-            <Route path="/chatbot" element={<ChatbotPage />} />
           </Route>
         </Routes>
       </BrowserRouter>
