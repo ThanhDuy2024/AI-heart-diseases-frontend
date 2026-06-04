@@ -40,6 +40,9 @@ const Navbar = () => {
   const navLinks = user ? authLinks : publicLinks;
 
   const isActive = (path) => location.pathname === path;
+  const isHomePage = location.pathname === '/';
+  // When on homepage with transparent navbar, use light text
+  const isTransparentDark = isHomePage && !isScrolled;
 
   const handleLogout = () => {
     logout();
@@ -62,10 +65,10 @@ const Navbar = () => {
               <Heart className="w-5 h-5 text-white" fill="white" />
             </div>
             <div className="hidden sm:block">
-              <h1 className="text-lg font-bold text-text-primary leading-tight">
-                Heart<span className="text-primary">AI</span>
+              <h1 className={`text-lg font-bold leading-tight transition-colors duration-300 ${isTransparentDark ? 'text-white' : 'text-text-primary'}`}>
+                Heart<span className={`${isTransparentDark ? 'text-red-400' : 'text-primary'}`}>AI</span>
               </h1>
-              <p className="text-[10px] text-text-secondary leading-none">
+              <p className={`text-[10px] leading-none transition-colors duration-300 ${isTransparentDark ? 'text-gray-300' : 'text-text-secondary'}`}>
                 Prediction System
               </p>
             </div>
@@ -79,8 +82,8 @@ const Navbar = () => {
                 to={link.to}
                 className={`flex items-center gap-2 px-4 py-2 rounded-xl text-sm font-medium transition-all duration-200 ${
                   isActive(link.to)
-                    ? 'bg-primary/10 text-primary'
-                    : 'text-text-secondary hover:text-text-primary hover:bg-gray-100'
+                    ? isTransparentDark ? 'bg-white/15 text-white' : 'bg-primary/10 text-primary'
+                    : isTransparentDark ? 'text-gray-300 hover:text-white hover:bg-white/10' : 'text-text-secondary hover:text-text-primary hover:bg-gray-100'
                 }`}
               >
                 {link.icon && <link.icon className="w-4 h-4" />}
@@ -95,17 +98,17 @@ const Navbar = () => {
               <div className="relative">
                 <button
                   onClick={() => setShowDropdown(!showDropdown)}
-                  className="flex items-center gap-2 px-3 py-2 rounded-xl hover:bg-gray-100 transition-all duration-200"
+                  className={`flex items-center gap-2 px-3 py-2 rounded-xl transition-all duration-200 ${isTransparentDark ? 'hover:bg-white/10' : 'hover:bg-gray-100'}`}
                 >
                   <div className="w-8 h-8 rounded-full bg-gradient-to-br from-secondary to-secondary-dark flex items-center justify-center">
                     <span className="text-white text-sm font-semibold">
                       {user.name?.[0]?.toUpperCase() || 'U'}
                     </span>
                   </div>
-                  <span className="text-sm font-medium text-text-primary">
+                  <span className={`text-sm font-medium transition-colors duration-300 ${isTransparentDark ? 'text-white' : 'text-text-primary'}`}>
                     {user.name || 'User'}
                   </span>
-                  <ChevronDown className={`w-4 h-4 text-text-secondary transition-transform ${showDropdown ? 'rotate-180' : ''}`} />
+                  <ChevronDown className={`w-4 h-4 transition-transform ${isTransparentDark ? 'text-gray-300' : 'text-text-secondary'} ${showDropdown ? 'rotate-180' : ''}`} />
                 </button>
 
                 {showDropdown && (
