@@ -167,8 +167,7 @@ const PredictPage = () => {
   const displayRecs = showAllRecs ? recommendations : recommendations.slice(0, 3);
 
   return (
-    <div className="min-h-screen pt-20 lg:pt-24 pb-12 bg-background">
-      <div className="container-custom">
+    <div className="space-y-6 pb-12">
         {/* Page Header */}
         <div className="mb-8">
           <div className="flex items-center gap-3 mb-2">
@@ -409,7 +408,6 @@ const PredictPage = () => {
             </AnimatePresence>
           </div>
         </div>
-      </div>
     </div>
   );
 };
