@@ -40,9 +40,9 @@ const Navbar = () => {
   const navLinks = user ? authLinks : publicLinks;
 
   const isActive = (path) => location.pathname === path;
-  const isHomePage = location.pathname === '/';
-  // When on homepage with transparent navbar, use light text
-  const isTransparentDark = isHomePage && !isScrolled;
+  const hasDarkHero = ['/', '/privacy', '/terms'].includes(location.pathname);
+  // When on pages with dark hero and transparent navbar, use light text
+  const isTransparentDark = hasDarkHero && !isScrolled;
 
   const handleLogout = () => {
     logout();

@@ -229,9 +229,9 @@ const RegisterPage = () => {
                 />
                 <span className="text-sm text-text-secondary">
                   Tôi đồng ý với{' '}
-                  <Link to="/" className="text-secondary font-medium hover:underline">điều khoản sử dụng</Link>
+                  <Link to="/terms" className="text-secondary font-medium hover:underline">điều khoản sử dụng</Link>
                   {' '}và{' '}
-                  <Link to="/" className="text-secondary font-medium hover:underline">chính sách bảo mật</Link>
+                  <Link to="/privacy" className="text-secondary font-medium hover:underline">chính sách bảo mật</Link>
                 </span>
               </label>
               {errors.agree && <p className="text-primary text-xs mt-1 flex items-center gap-1"><AlertCircle className="w-3 h-3" />{errors.agree}</p>}

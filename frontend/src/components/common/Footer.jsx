@@ -20,7 +20,7 @@ const Footer = () => {
               </div>
             </Link>
             <p className="text-sm leading-relaxed text-gray-400">
-              Hệ thống dự đoán nguy cơ mắc bệnh tim mạch bằng Trí tuệ Nhân tạo, 
+              Hệ thống dự đoán nguy cơ mắc bệnh tim mạch bằng Trí tuệ Nhân tạo,
               sử dụng mô hình Machine Learning từ bộ dữ liệu Framingham Heart Study.
             </p>
           </div>
@@ -33,7 +33,6 @@ const Footer = () => {
                 { to: '/', label: 'Trang chủ' },
                 { to: '/predict', label: 'Dự đoán bệnh tim' },
                 { to: '/history', label: 'Lịch sử dự đoán' },
-                { to: '/chatbot', label: 'AI Chatbot' },
               ].map((link) => (
                 <li key={link.to}>
                   <Link
@@ -65,7 +64,7 @@ const Footer = () => {
             <ul className="space-y-3">
               <li>
                 <a
-                  href="https://github.com"
+                  href="https://github.com/MinhPhung1307/AI-heart-diseases"
                   target="_blank"
                   rel="noopener noreferrer"
                   className="flex items-center gap-2 text-sm text-gray-400 hover:text-primary transition-colors"
@@ -76,16 +75,16 @@ const Footer = () => {
               </li>
               <li>
                 <a
-                  href="mailto:contact@heartai.vn"
+                  href="mailto:phungnm5866@ut.edu.vn"
                   className="flex items-center gap-2 text-sm text-gray-400 hover:text-primary transition-colors"
                 >
                   <Mail className="w-4 h-4" />
-                  contact@heartai.vn
+                  phungnm5866@ut.edu.vn
                 </a>
               </li>
               <li>
                 <Link
-                  to="/"
+                  to="/privacy"
                   className="flex items-center gap-2 text-sm text-gray-400 hover:text-primary transition-colors"
                 >
                   <Shield className="w-4 h-4" />
@@ -94,7 +93,7 @@ const Footer = () => {
               </li>
               <li>
                 <Link
-                  to="/"
+                  to="/terms"
                   className="flex items-center gap-2 text-sm text-gray-400 hover:text-primary transition-colors"
                 >
                   <FileText className="w-4 h-4" />
