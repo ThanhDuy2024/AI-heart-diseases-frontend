@@ -41,7 +41,7 @@ const RegisterPage = () => {
 
     setIsLoading(true);
     try {
-      await authService.register({ name: form.name, email: form.email, password: form.password });
+      await authService.register({ fullName: form.name, email: form.email, password: form.password });
       login({ name: form.name, email: form.email }, 'demo-token');
       navigate('/predict');
     } catch (err) {
