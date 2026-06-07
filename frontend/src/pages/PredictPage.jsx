@@ -126,21 +126,15 @@ const PredictPage = () => {
     setIsLoading(true);
     try {
       const res = await predictService.predict(formData);
+      const predictionData = res.data.data || res.data;
       setResult({
-        prediction: res.data.prediction,
-        diseasePercent: res.data.disease_percent,
-        noDiseasePercent: res.data.no_disease_percent,
+        prediction: predictionData.prediction,
+        diseasePercent: predictionData.disease_percent,
+        noDiseasePercent: predictionData.no_disease_percent,
       });
     } catch (err) {
-      // Fallback: mock result for demo
-      const mockPercent = Math.random() > 0.5
-        ? Math.floor(Math.random() * 30 + 55)
-        : Math.floor(Math.random() * 25 + 5);
-      setResult({
-        prediction: mockPercent > 50 ? 1 : 0,
-        diseasePercent: mockPercent,
-        noDiseasePercent: 100 - mockPercent,
-      });
+      const message = err.response?.data?.message || 'Không thể kết nối đến máy chủ. Vui lòng thử lại sau.';
+      setApiError(message);
     } finally {
       setIsLoading(false);
     }

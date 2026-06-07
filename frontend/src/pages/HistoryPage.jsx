@@ -1,41 +1,12 @@
-import { useState, useMemo } from 'react';
+import { useState, useMemo, useEffect } from 'react';
 import { motion, AnimatePresence } from 'framer-motion';
 import {
   History, Search, Filter, Calendar, TrendingUp, Activity,
   Eye, FileDown, X, ChevronLeft, ChevronRight, AlertCircle,
-  CheckCircle2, Clock, BarChart3
+  CheckCircle2, Clock, BarChart3, Loader2
 } from 'lucide-react';
 import { getRiskLevel } from '../utils/constants';
-
-/* ───── Mock History Data ───── */
-const generateMockHistory = () => {
-  const entries = [];
-  const now = new Date();
-  for (let i = 0; i < 15; i++) {
-    const date = new Date(now);
-    date.setDate(date.getDate() - i * Math.floor(Math.random() * 7 + 1));
-    const risk = Math.floor(Math.random() * 85 + 5);
-    entries.push({
-      id: `pred-${i + 1}`,
-      date: date.toISOString(),
-      riskPercent: risk,
-      riskLevel: getRiskLevel(risk),
-      data: {
-        male: Math.round(Math.random()), age: Math.floor(Math.random() * 40 + 30),
-        totChol: Math.floor(Math.random() * 150 + 150), sysBP: Math.floor(Math.random() * 60 + 100),
-        diaBP: Math.floor(Math.random() * 40 + 60), BMI: +(Math.random() * 15 + 18).toFixed(1),
-        heartRate: Math.floor(Math.random() * 40 + 60), glucose: Math.floor(Math.random() * 80 + 70),
-        currentSmoker: Math.round(Math.random()), cigsPerDay: Math.floor(Math.random() * 20),
-        BPMeds: Math.round(Math.random()), prevalentStroke: 0,
-        prevalentHyp: Math.round(Math.random()), diabetes: Math.round(Math.random()),
-        education: Math.floor(Math.random() * 4 + 1),
-      },
-    });
-  }
-  return entries.sort((a, b) => new Date(b.date) - new Date(a.date));
-};
-
-const MOCK_HISTORY = generateMockHistory();
+import { historyService } from '../services/api';
 
 /* ───── Detail Modal ───── */
 const DetailModal = ({ entry, onClose }) => {
@@ -135,10 +106,40 @@ const HistoryPage = () => {
   const [filterRisk, setFilterRisk] = useState('all');
   const [currentPage, setCurrentPage] = useState(1);
   const [selectedEntry, setSelectedEntry] = useState(null);
+  const [entries, setEntries] = useState([]);
+  const [isLoading, setIsLoading] = useState(true);
+  const [error, setError] = useState('');
   const perPage = 8;
 
+  useEffect(() => {
+    const fetchHistory = async () => {
+      setIsLoading(true);
+      setError('');
+      try {
+        const res = await historyService.getList();
+        const list = res.data.data || [];
+        const mapped = list.map((item) => {
+          const riskPercent = Math.round(item.predict?.disease_percent ?? 0);
+          return {
+            id: item._id,
+            date: item.createdAt,
+            riskPercent,
+            riskLevel: getRiskLevel(riskPercent),
+            data: item.data || {},
+          };
+        });
+        setEntries(mapped);
+      } catch {
+        setError('Không thể tải lịch sử dự đoán. Vui lòng thử lại sau.');
+      } finally {
+        setIsLoading(false);
+      }
+    };
+    fetchHistory();
+  }, []);
+
   const filtered = useMemo(() => {
-    return MOCK_HISTORY.filter((e) => {
+    return entries.filter((e) => {
       if (filterRisk === 'low' && e.riskLevel.color !== 'success') return false;
       if (filterRisk === 'medium' && e.riskLevel.color !== 'warning') return false;
       if (filterRisk === 'high' && e.riskLevel.color !== 'danger') return false;
@@ -148,13 +149,13 @@ const HistoryPage = () => {
       }
       return true;
     });
-  }, [search, filterRisk]);
+  }, [search, filterRisk, entries]);
 
   const totalPages = Math.ceil(filtered.length / perPage);
   const paginated = filtered.slice((currentPage - 1) * perPage, currentPage * perPage);
 
-  const avgRisk = MOCK_HISTORY.length
-    ? (MOCK_HISTORY.reduce((s, e) => s + e.riskPercent, 0) / MOCK_HISTORY.length).toFixed(1)
+  const avgRisk = entries.length
+    ? (entries.reduce((s, e) => s + e.riskPercent, 0) / entries.length).toFixed(1)
     : 0;
 
   const handleExportPDF = () => {
@@ -187,7 +188,7 @@ const HistoryPage = () => {
             <BarChart3 className="w-6 h-6 text-secondary" />
           </div>
           <div>
-            <p className="text-2xl font-bold text-text-primary">{MOCK_HISTORY.length}</p>
+            <p className="text-2xl font-bold text-text-primary">{entries.length}</p>
             <p className="text-sm text-text-secondary">Tổng lần dự đoán</p>
           </div>
         </div>
@@ -206,7 +207,7 @@ const HistoryPage = () => {
           </div>
           <div>
             <p className="text-2xl font-bold text-text-primary">
-              {MOCK_HISTORY[0] ? new Date(MOCK_HISTORY[0].date).toLocaleDateString('vi-VN') : '-'}
+              {entries[0] ? new Date(entries[0].date).toLocaleDateString('vi-VN') : '-'}
             </p>
             <p className="text-sm text-text-secondary">Lần gần nhất</p>
           </div>
@@ -317,7 +318,21 @@ const HistoryPage = () => {
           </table>
         </div>
 
-        {paginated.length === 0 && (
+        {isLoading && (
+          <div className="text-center py-12">
+            <Loader2 className="w-12 h-12 text-text-muted mx-auto mb-3 animate-spin" />
+            <p className="text-text-secondary">Đang tải dữ liệu...</p>
+          </div>
+        )}
+
+        {!isLoading && error && (
+          <div className="text-center py-12">
+            <AlertCircle className="w-12 h-12 text-primary mx-auto mb-3" />
+            <p className="text-text-secondary">{error}</p>
+          </div>
+        )}
+
+        {!isLoading && !error && paginated.length === 0 && (
           <div className="text-center py-12">
             <Activity className="w-12 h-12 text-text-muted mx-auto mb-3" />
             <p className="text-text-secondary">Không tìm thấy kết quả phù hợp</p>

@@ -95,7 +95,7 @@ const HeroSection = () => {
             </h1>
 
             <p className="text-lg sm:text-xl text-gray-400 max-w-xl mx-auto lg:mx-0 mb-8 leading-relaxed">
-              Dự đoán nguy cơ mắc bệnh tim bằng Trí tuệ Nhân tạo. 
+              Dự đoán nguy cơ mắc bệnh tim bằng Trí tuệ Nhân tạo.
               Phân tích 15 chỉ số sức khỏe để đưa ra đánh giá chính xác và khuyến nghị phù hợp.
             </p>
 
@@ -501,7 +501,7 @@ const CTASection = () => {
                 Kiểm tra sức khỏe tim mạch ngay hôm nay
               </h2>
               <p className="text-lg text-white/80 max-w-2xl mx-auto mb-8">
-                Phát hiện sớm nguy cơ bệnh tim để có biện pháp phòng ngừa kịp thời. 
+                Phát hiện sớm nguy cơ bệnh tim để có biện pháp phòng ngừa kịp thời.
                 Chỉ mất 2 phút để bắt đầu.
               </p>
               <Link

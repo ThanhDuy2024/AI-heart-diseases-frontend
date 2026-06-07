@@ -39,7 +39,11 @@ export const authService = {
 };
 
 export const predictService = {
-  predict: (data) => aiApi.post('/predict', data),
+  predict: (data) => api.post('/ai/predict', data),
+};
+
+export const historyService = {
+  getList: () => api.get('/history/list'),
 };
 
 export default api;
