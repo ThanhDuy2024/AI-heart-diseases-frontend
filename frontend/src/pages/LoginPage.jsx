@@ -35,9 +35,10 @@ const LoginPage = () => {
     setIsLoading(true);
     try {
       const res = await authService.login(form.email, form.password);
+      const { token, user } = res.data;
       login(
-        { name: form.email.split('@')[0], email: form.email },
-        res.data?.token || 'demo-token'
+        { name: user?.fullName || form.email.split('@')[0], email: user?.email || form.email },
+        token || 'demo-token'
       );
       navigate('/predict');
     } catch (err) {
